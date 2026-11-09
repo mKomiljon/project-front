@@ -1,0 +1,9 @@
+#table, #table td, #table th, #table tr{
+    border: 1px solid cornflowerblue;
+}
+
+#table {
+    background-color: antiquewhite;
+    margin-left: auto;
+    margin-right: auto;
+}
