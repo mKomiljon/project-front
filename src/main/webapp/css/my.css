@@ -1,5 +1,6 @@
 #table, #table td, #table th, #table tr{
-    border: 1px solid cornflowerblue;
+    border: 1px solid black;
+    padding: 3px;
 }
 
 #table {

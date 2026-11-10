@@ -4,7 +4,7 @@
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
     <link href="/css/my.css" rel="stylesheet">
 </head>
-<body>
+<body onload="list()">
 <h1>RPG admin panel</h1>
 <h2>Accounts list:</h2>
 <table id="table">
@@ -20,39 +20,57 @@
             <th>Banned</th>
         </tr>
     </thead>
-
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>Nius</td>
-        <td>Silence Coming</td>
-        <td>HOBBIT</td>
-        <td>ROGUE</td>
-        <td>33</td>
-        <td>6/9/2008</td>
-        <td>false</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Nickrush</td>
-        <td>NightWulf</td>
-        <td>ORC</td>
-        <td>WARRIOR</td>
-        <td>58</td>
-        <td>8/8/2005</td>
-        <td>false</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>Azzassal</td>
-        <td>fizzing</td>
-        <td>DWARF</td>
-        <td>CLERIC</td>
-        <td>3</td>
-        <td>5/25/2009</td>
-        <td>true</td>
-    </tr>
-    </tbody>
+<script>
+    function list() {
+        let url = "/rest/players";
+        $.get(url, function (response) {
+            $.each(response, function (i, item) {
+                $('<tr>').html('<td>'
+                    + item.id + "</td><td>"
+                    + item.name + "</td><td>"
+                    + item.title + "</td><td>"
+                    + item.race + "</td><td>"
+                    + item.profession + "</td><td>"
+                    + item.level + "</td><td>"
+                    + new Date(item.birthday).toLocaleDateString() + "</td><td>"
+                    + item.banned + "</td>"
+                ).appendTo("#table")
+            })
+        })
+    }
+</script>
+<!--    <tbody>-->
+<!--    <tr>-->
+<!--        <td>1</td>-->
+<!--        <td>Nius</td>-->
+<!--        <td>Silence Coming</td>-->
+<!--        <td>HOBBIT</td>-->
+<!--        <td>ROGUE</td>-->
+<!--        <td>33</td>-->
+<!--        <td>6/9/2008</td>-->
+<!--        <td>false</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td>2</td>-->
+<!--        <td>Nickrush</td>-->
+<!--        <td>NightWulf</td>-->
+<!--        <td>ORC</td>-->
+<!--        <td>WARRIOR</td>-->
+<!--        <td>58</td>-->
+<!--        <td>8/8/2005</td>-->
+<!--        <td>false</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td>4</td>-->
+<!--        <td>Azzassal</td>-->
+<!--        <td>fizzing</td>-->
+<!--        <td>DWARF</td>-->
+<!--        <td>CLERIC</td>-->
+<!--        <td>3</td>-->
+<!--        <td>5/25/2009</td>-->
+<!--        <td>true</td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
 </table>
 
 </body>
