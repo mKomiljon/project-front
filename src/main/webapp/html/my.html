@@ -4,12 +4,12 @@
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
     <link href="/css/my.css" rel="stylesheet">
 </head>
-<body onload="list()">
+<body onload="list(0)">
 <h1>RPG admin panel</h1>
 <h2>Accounts list:</h2>
 
 <label for="count_1">Count per page</label>
-<select id="count_1" onchange="list()">
+<select id="count_1" onchange="list(0)">
     <option value="3">3</option>
     <option value="3">5</option>
     <option value="3">10</option>
@@ -34,10 +34,26 @@
 <div id="paging_buttons">Pages:</div>
 
 <script>
-    function list() {
+    function list(page_number) {
         $('tr:has(td)').remove();
 
         let url = "/rest/players";
+
+        let countPerPage = $("#count_1").val();
+
+        if (countPerPage == null) {
+            countPerPage = 3;
+        }
+
+        url.concat("pageSize=").concat(countPerPage);
+
+        if (page_number == null) {
+            page_number = 0;
+        }
+        url.concat("&pageNumber=").concat(page_number);
+
+        console.log("url: " + url)
+
         $.get(url, function (response) {
             $.each(response, function (i, item) {
                 $('<tr>').html('<td>'
@@ -54,11 +70,7 @@
         })
 
         let totalCount = getTotalCount();
-        let countPerPage = $("count_1").val();
 
-        if (countPerPage == null) {
-            countPerPage = 3;
-        }
 
         let pagesCount = Math.ceil(totalCount / countPerPage);
 
@@ -67,8 +79,8 @@
         for (let i = 0; i < pagesCount; i++) {
             let button_tag = "<button>" + (i + 1) + "</button>"
             let btn = $(button_tag)
-                .attr('id', 'paging_button_' + 1)
-                .attr('onclick', 'list()')
+                .attr('id', 'paging_button_' + i)
+                .attr('onclick', 'list("+i+")')
                 .addClass('pgn-bnt-styled');   <!-- # qavs ichidagi remove dagi blan 1 xil bumasa ishlamaydi -->
             $('#paging_buttons').append(btn);   <!-- # qopketsayam 14 knopkaa kurinmaydi -->
         }
