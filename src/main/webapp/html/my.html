@@ -35,6 +35,8 @@
 
 <script>
     function list() {
+        $('tr:has(td)').remove();
+
         let url = "/rest/players";
         $.get(url, function (response) {
             $.each(response, function (i, item) {
@@ -60,12 +62,14 @@
 
         let pagesCount = Math.ceil(totalCount / countPerPage);
 
+        $('button.pgn-bnt-styled').remove();
+
         for (let i = 0; i < pagesCount; i++) {
             let button_tag = "<button>" + (i + 1) + "</button>"
             let btn = $(button_tag)
                 .attr('id', 'paging_button_' + 1)
                 .attr('onclick', 'list()')
-                .addClass('pgn_out_stiles');
+                .addClass('pgn-bnt-styled');   <!-- # qavs ichidagi remove dagi blan 1 xil bumasa ishlamaydi -->
             $('#paging_buttons').append(btn);   <!-- # qopketsayam 14 knopkaa kurinmaydi -->
         }
 
