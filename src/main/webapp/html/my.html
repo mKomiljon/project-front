@@ -7,8 +7,17 @@
 <body onload="list()">
 <h1>RPG admin panel</h1>
 <h2>Accounts list:</h2>
+
+<label for="count_1">Count per page</label>
+<select id="count_1" onchange="list()">
+    <option value="3">3</option>
+    <option value="3">5</option>
+    <option value="3">10</option>
+    <option value="3">20</option>
+</select>
+
 <table id="table">
-    <thead>
+<!--    <thead>-->
         <tr>
             <th>#</th>
             <th>Name</th>
@@ -19,7 +28,11 @@
             <th>Birthday</th>
             <th>Banned</th>
         </tr>
-    </thead>
+<!--    </thead>-->
+</table>
+
+<div id="paging_buttons">Pages:</div>
+
 <script>
     function list() {
         let url = "/rest/players";
@@ -37,7 +50,41 @@
                 ).appendTo("#table")
             })
         })
+
+        let totalCount = getTotalCount();
+        let countPerPage = $("count_1").val();
+
+        if (countPerPage == null) {
+            countPerPage = 3;
+        }
+
+        let pagesCount = Math.ceil(totalCount / countPerPage);
+
+        for (let i = 0; i < pagesCount; i++) {
+            let button_tag = "<button>" + (i + 1) + "</button>"
+            let btn = $(button_tag)
+                .attr('id', 'paging_button_' + 1)
+                .attr('onclick', 'list()')
+                .addClass('pgn_out_stiles');
+            $('#paging_buttons').append(btn);   <!-- # qopketsayam 14 knopkaa kurinmaydi -->
+        }
+
     }
+
+    function getTotalCount() {
+        let url = "/rest/players/count"
+        let res = 0;
+        $.ajax({
+            url: url,
+            async: false,        <!-- xato ketsa saytda hech narsa kurinmaydi -->
+            success: function (result) {
+                res = parseInt(result);
+            }
+        })
+
+        return res;
+    }
+
 </script>
 <!--    <tbody>-->
 <!--    <tr>-->
@@ -71,7 +118,7 @@
 <!--        <td>true</td>-->
 <!--    </tr>-->
 <!--    </tbody>-->
-</table>
+<!--</table>-->
 
 </body>
 </html>
