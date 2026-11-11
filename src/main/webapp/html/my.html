@@ -39,7 +39,7 @@
 <h2>Create new account:</h2>
 <label for="input_name_new">Name:</label>
 <input type="text" id="input_name_new" name="name" required size="12" maxlength="12">
-<br>      <!-- yopishib qomasligi ucun -->
+<br>      <!-- ketmaket bomasligi ucun, keingi qatorga utkazadi -->
 
 <label for="input_title_new">Title:</label>
 <input type="text" id="input_title_new" title="title" required size="30" maxlength="30">
@@ -84,6 +84,10 @@
     <option value='true'>true</option>
 </select>
 <br>
+
+<span>
+    <button type="submit" onclick="createAccaunt()">Save</button>
+</span>
 
 <script>
     function list(page_number) {
@@ -211,6 +215,52 @@
 
         let property_save_tag = "saveAccaunt(" + id + ")";
         $(identifier_edit).attr('onclick', property_save_tag);
+    }
+
+    function createAccaunt(id) {
+        let value_name = $("#input_name_new").val();
+        let value_title = $("#input_title_new").val();
+        let value_race = $("#input_race_new").val();
+        let value_profession = $("#input_profession_new").val();
+        let value_level = $("#input_level_new").val();
+        let value_birthday = $("#input_birthday_new").val();
+        let value_banned = $("#input_banned_new").val();
+
+        // let current_page = window.location.href;
+        console.log(value_name)
+        console.log(value_title)
+        console.log(value_race)
+        console.log(value_profession)
+        console.log(value_level)
+        console.log(value_birthday)
+        console.log(value_banned)
+
+        let url = "/rest/players";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            async: false,
+            data: JSON.stringify({"name": value_name,
+                "title": value_title,
+                "race": value_race,
+                "profession": value_profession,
+                "banned": value_banned,
+                "level": value_level,
+                "birthday": new Date(value_birthday).getTime()
+            }),
+            success: function () {
+                $("#input_name_new").val("");
+                $("#input_title_new").val("");
+                $("#select_race_new").val("");
+                $("#select_profession_new").val("");
+                $("#select_level_new").val("");
+                $("#select_birthday_new").val("");
+                $("#select_banned_new").val("");
+                list(getCurrentPage());
+            }
+        })
     }
 
     function saveAccaunt(id) {
