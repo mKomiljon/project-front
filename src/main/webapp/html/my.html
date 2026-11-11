@@ -8,12 +8,12 @@
 <h1>RPG admin panel</h1>
 <h2>Accounts list:</h2>
 
-<label for="count_1">Count per page</label>
+<label for="count_1">Count per page:</label>
 <select id="count_1" onchange="list(0)">
     <option value="3">3</option>
-    <option value="3">5</option>
-    <option value="3">10</option>
-    <option value="3">20</option>
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="20">20</option>
 </select>
 
 <table id="table">
@@ -37,20 +37,20 @@
     function list(page_number) {
         $('tr:has(td)').remove();
 
-        let url = "/rest/players";
+        let url = "/rest/players?";
 
         let countPerPage = $("#count_1").val();
-
+        console.log("countPerPage = " + countPerPage);
         if (countPerPage == null) {
             countPerPage = 3;
         }
 
-        url.concat("pageSize=").concat(countPerPage);
+        url = url.concat("pageSize=").concat(countPerPage);
 
         if (page_number == null) {
             page_number = 0;
         }
-        url.concat("&pageNumber=").concat(page_number);
+        url = url.concat("&pageNumber=").concat(page_number);
 
         console.log("url: " + url)
 
@@ -77,10 +77,10 @@
         $('button.pgn-bnt-styled').remove();
 
         for (let i = 0; i < pagesCount; i++) {
-            let button_tag = "<button>" + (i + 1) + "</button>"
+            let button_tag = "<button>" + (i + 1) + "</button>";
             let btn = $(button_tag)
                 .attr('id', 'paging_button_' + i)
-                .attr('onclick', 'list("+i+")')
+                .attr('onclick', "list(" + i + ")")   <!-- agar "list(' + i + ')" busa xato chiqadi! -->
                 .addClass('pgn-bnt-styled');   <!-- # qavs ichidagi remove dagi blan 1 xil bumasa ishlamaydi -->
             $('#paging_buttons').append(btn);   <!-- # qopketsayam 14 knopkaa kurinmaydi -->
         }
